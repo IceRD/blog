@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@controllers": ["./controllers"],
+      "@models": ["./database/models"],
+      "@error": ["./error"],
+      "@lang": ["./lang"]
+    }
+  }
+}

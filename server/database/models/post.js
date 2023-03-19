@@ -1,10 +1,9 @@
-"use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Post extends Model {
     static associate(models) {
-      Post.belongsTo(models.User);
-      models.User.hasMany(Post);
+      models.Post.belongsTo(models.User);
+      models.User.hasMany(models.Post);
     }
   }
 
