@@ -1,10 +1,16 @@
 const ApiError = require("@error/ApiError");
 const t = require("@lang");
 
-module.exports = function (err, req, res, next) {
+const ErrorMiddleware = function (err, req, res, next) {
   if (err instanceof ApiError) {
-    return res.status(err.status).json({ message: err.message, error: true });
+    res.status(err.status);
+    res.json({ message: err.message, error: true });
+    return res;
   }
 
-  return res.status(500).json({ message: t.UNEXPECTED_ERROR, error: true });
+  res.status(500);
+  res.json({ message: t.UNEXPECTED_ERROR, error: true });
+  return res;
 };
+
+module.exports = ErrorMiddleware;

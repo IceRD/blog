@@ -4,8 +4,10 @@
     "paths": {
       "@controllers": ["./controllers"],
       "@models": ["./database/models"],
+      "@middleware": ["./middleware"],
       "@error": ["./error"],
-      "@lang": ["./lang"]
+      "@lang": ["./lang"],
+      "@constants": ["./constants"]
     }
   }
 }

@@ -1,17 +1,14 @@
 const Router = require("express");
 const router = new Router();
 
-const LoginUserController = require("@controllers/auth/LoginUserController");
-const RegisterUserController = require("@controllers/auth/RegisterUserController");
-const AuthenticateUserController = require("@controllers/auth/AuthenticateUserController");
-const LogoutUserController = require("@controllers/auth/LogoutUserController");
+const AuthMiddleware = require("@middleware/AuthMiddleware");
 
-router.post("/login", LoginUserController.__invoke);
+const RegisterUserController = require("@controllers/auth/RegisterUserController");
+const LoginUserController = require("@controllers/auth/LoginUserController");
+const AuthUserController = require("@controllers/auth/AuthUserController");
 
 router.post("/register", RegisterUserController.__invoke);
-
-router.get("/auth", AuthenticateUserController.__invoke);
-
-router.get("/logout", LogoutUserController.__invoke);
+router.post("/login", LoginUserController.__invoke);
+router.get("/auth", AuthMiddleware, AuthUserController.__invoke);
 
 module.exports = router;

@@ -1,34 +1,34 @@
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-const ApiError = require("@error/ApiError");
+const UserController = require("@controllers/auth/UserController");
 const t = require("@lang");
 const { User } = require("@models");
 
-class RegisterUserController {
+class RegisterUserController extends UserController {
+  constructor() {
+    super();
+
+    this.__invoke = this.__invoke.bind(this);
+  }
+
   async __invoke(req, res, next) {
     const { login, password, password_confirmation } = req.body;
 
     if (!login || !password || password !== password_confirmation) {
-      return next(ApiError.badRequest(t.INCORRECT_REGISTRATION));
+      return next(this.ApiError.badRequest(t.INCORRECT_AUTH_DATA));
     }
 
     const isUser = await User.findOne({ where: { login } });
 
     if (isUser) {
-      return next(ApiError.badRequest(t.USER_ALREADY_REGISTERED));
+      return next(this.ApiError.badRequest(t.USER_ALREADY_REGISTERED));
     }
 
-    const hashPassword = await bcrypt.hash(password, 3);
+    const hashPassword = this.hash(password);
 
     const user = await User.create({ login, password: hashPassword });
 
-    const token = jwt.sign(
-      { id: user.id, login: user.login, role_id: user.role_id },
-      process.env.SECRET_KEY,
-      { expiresIn: "1d" }
-    );
+    const token = this.generateJwt(user);
 
-    return res.json({ token });
+    return res.json({ token, error: false });
   }
 }
 
