@@ -18,13 +18,18 @@ app.use(express.json());
 app.use("/api", routes);
 app.use(errorMiddleware);
 
+const startInfo = `
+Server started
+\x1b[34m
+Pid: ${PID}
+Local: http://${HOST}:${PORT}
+\x1b[0m`;
+
 (async () => {
   try {
     await db.sequelize.authenticate();
 
-    app.listen(PORT, () =>
-      console.log(`Server started: ${HOST}:${PORT}. Pid: ${PID}`)
-    );
+    app.listen(PORT, () => console.log(startInfo));
   } catch (e) {
     console.log(e);
   }
